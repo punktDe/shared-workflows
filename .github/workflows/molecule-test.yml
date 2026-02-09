@@ -3,11 +3,12 @@ name: Molecule Test
 run-name: Run molecule tests on the role
 on:
   workflow_call:
-    python-version:
-      description: "Python version to install"
-      required: false
-      type: string
-      default: "3.14"
+    inputs:
+      python-version:
+        description: "Python version to install"
+        required: false
+        type: string
+        default: "3.14"
 
 env:
   ANSIBLE_ROLES_PATH: roles
