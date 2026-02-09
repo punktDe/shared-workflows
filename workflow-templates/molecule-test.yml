@@ -1,0 +1,44 @@
+---
+name: Molecule Test
+run-name: Run molecule tests on the role
+on:
+  workflow_call:
+    python-version:
+      description: "Python version to install"
+      required: false
+      type: string
+      default: "3.14"
+
+env:
+  ANSIBLE_ROLES_PATH: roles
+  ANSIBLE_HASH_BEHAVIOUR: merge
+
+jobs:
+  molecule:
+    strategy:
+      matrix:
+        os: [ubuntu-2204, ubuntu-2404, debian-12, debian-13]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.10.0"
+
+      - name: Set up Python
+        run: uv python install ${{ inputs.python-version }}
+
+      - name: Install dependencies.
+        run: |
+          uv -q venv --allow-existing --seed .venv
+          . .venv/bin/activate
+          uv -q pip install -r requirements.txt
+          ansible-galaxy install -r requirements.yml
+
+      - name: Run molecule
+        run: |
+          . .venv/bin/activate
+          molecule test -p ${{ matrix.os }}
