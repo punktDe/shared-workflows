@@ -33,7 +33,7 @@ jobs:
         run: uv python install ${{ inputs.python-version }}
 
       - name: Install yq
-        run: apt-get update && apt-get install -y yq
+        run: sudo apt-get update && sudo apt-get install -y yq
 
       - name: Install dependencies.
         run: |
