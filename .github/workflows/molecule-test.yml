@@ -44,6 +44,7 @@ jobs:
 
       - name: Copy the role to the global Ansible directory
         run: |
+          mkdir -p ~/.ansible/roles
           role_name=$(yq -r ".galaxy_info.role_name" meta/main.yml)
           cp -r . ~/.ansible/roles/$role_name
 
