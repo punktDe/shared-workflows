@@ -1,0 +1,37 @@
+---
+name: Publish the Ansible role on Ansible Galaxy
+"on":
+  workflow_call:
+    inputs:
+      python-version:
+        description: "Python version to install"
+        required: false
+        type: string
+        default: "3.14"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.10.0"
+
+      - name: Set up Python
+        run: uv python install ${{ inputs.python-version }}
+
+      - name: Install dependencies.
+        run: |
+          uv -q venv --allow-existing --seed .venv
+          . .venv/bin/activate
+          uv -q pip install -r requirements.txt
+
+      - name: Trigger a new import on Galaxy
+        run: >-
+          ansible-galaxy role import --api-key ${{ secrets.ANSIBLE_GALAXY_API_KEY }}
+          $(echo ${{ github.repository }} | cut -d/ -f1) $(echo ${{ github.repository }} | cut -d/ -f2)
