@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Setup Ansible
-        uses: ./.github/actions/setup-ansible
+        uses: punktDe/shared-workflows/.github/actions/setup-ansible@refactor
         with:
           python-version: ${{ inputs.python-version }}
 
