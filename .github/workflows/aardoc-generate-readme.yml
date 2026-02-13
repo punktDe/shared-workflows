@@ -1,6 +1,5 @@
 ---
 name: Generate aar-doc README.md for the role
-
 on:
   workflow_call:
     inputs:

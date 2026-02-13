@@ -1,6 +1,6 @@
 ---
 name: Ansible Lint
-run-name: Run the ansible linter
+run-name: Run ansible-lint
 on:
   workflow_call:
     inputs:
