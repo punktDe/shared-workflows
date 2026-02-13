@@ -100,7 +100,6 @@ jobs:
           git push
 
   galaxy-release:
-    name: Release
     if: >-
       always() && startsWith(github.ref, 'refs/tags/') && inputs.run_galaxy_release
     needs:
